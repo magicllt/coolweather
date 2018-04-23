@@ -180,9 +180,17 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     public void requestWeather(final String weatherId){
-        String address = "http://guolin.tech/api/weather?cityid=" +
-                weatherId +
-                "&key=667e14d6cd724dbf841db15827b2f478";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this);
+        String address;
+        if (prefs.getString("weatherId", null) != null) {
+            address = "http://guolin.tech/api/weather?cityid=" +
+                    prefs.getString("weatherId", null) +
+                    "&key=667e14d6cd724dbf841db15827b2f478";
+        }else{
+            address = "http://guolin.tech/api/weather?cityid=" +
+                    weatherId +
+                    "&key=667e14d6cd724dbf841db15827b2f478";
+        }
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
